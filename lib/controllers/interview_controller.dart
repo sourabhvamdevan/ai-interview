@@ -89,7 +89,7 @@ class InterviewController extends GetxController {
   }
 
   Future<void> evaluateWithAI() async {
-    const apiKey = "YOUR_GEMINI_API_KEY"; // replace later with env
+    const apiKey = ""; // replace later with env
 
     final prompt =
         '''
