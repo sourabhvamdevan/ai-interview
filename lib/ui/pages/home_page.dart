@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../controllers/auth_controller.dart';
 import '../../controllers/interview_controller.dart';
+import '../../controllers/theme_controller.dart';
 import '../widgets/app_primary_button.dart';
 
 class InterviewHomePage extends StatelessWidget {
@@ -14,6 +15,7 @@ class InterviewHomePage extends StatelessWidget {
     final InterviewController interviewController = Get.put(
       InterviewController(),
     );
+    final ThemeController themeController = Get.find<ThemeController>();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -21,6 +23,16 @@ class InterviewHomePage extends StatelessWidget {
         backgroundColor: Colors.black,
         title: const Text("AI Interview"),
         actions: [
+          IconButton(
+            icon: Obx(
+              () => Icon(
+                themeController.isDark.value
+                    ? Icons.light_mode
+                    : Icons.dark_mode,
+              ),
+            ),
+            onPressed: themeController.toggleTheme,
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: authController.logoutUser,
@@ -32,7 +44,6 @@ class InterviewHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Greeting
             Text(
               "Welcome",
               style: TextStyle(color: Colors.grey.shade400, fontSize: 14),
@@ -46,10 +57,8 @@ class InterviewHomePage extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-
             const SizedBox(height: 40),
 
-            // Role selection
             const Text(
               "Select Role",
               style: TextStyle(color: Colors.white, fontSize: 16),
@@ -74,10 +83,8 @@ class InterviewHomePage extends StatelessWidget {
                 decoration: _dropdownDecoration(),
               ),
             ),
-
             const SizedBox(height: 25),
 
-            // Difficulty selection
             const Text(
               "Select Difficulty",
               style: TextStyle(color: Colors.white, fontSize: 16),
@@ -105,7 +112,6 @@ class InterviewHomePage extends StatelessWidget {
 
             const Spacer(),
 
-            // Start interview button
             AppPrimaryButton(
               text: "Start Interview",
               onPressed: interviewController.startInterview,

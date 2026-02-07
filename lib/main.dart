@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'controllers/theme_controller.dart';
 
 import 'controllers/auth_controller.dart';
 import 'models/user_model.dart';
@@ -20,6 +21,8 @@ Future<void> main() async {
   await Hive.openBox<String>('session');
 
   final AuthController authController = Get.put(AuthController());
+  Get.put(AuthController());
+  Get.put(ThemeController());
 
   runApp(
     NeuroTrainerApp(
@@ -37,22 +40,26 @@ class NeuroTrainerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: "AI Interview App",
-      debugShowCheckedModeBanner: false,
+    final ThemeController theme = Get.find<ThemeController>();
 
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.dark, // default
+    return Obx(
+      () => GetMaterialApp(
+        title: "AI Interview App",
+        debugShowCheckedModeBanner: false,
 
-      initialRoute: initialRoute,
-      getPages: [
-        GetPage(name: '/login', page: () => LoginPage()),
-        GetPage(name: '/signup', page: () => SignupPage()),
-        GetPage(name: '/home', page: () => InterviewHomePage()),
-        GetPage(name: '/interview', page: () => InterviewScreen()),
-        GetPage(name: '/result', page: () => ResultScreen()),
-      ],
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: theme.themeMode,
+
+        initialRoute: initialRoute,
+        getPages: [
+          GetPage(name: '/login', page: () => LoginPage()),
+          GetPage(name: '/signup', page: () => SignupPage()),
+          GetPage(name: '/home', page: () => InterviewHomePage()),
+          GetPage(name: '/interview', page: () => InterviewScreen()),
+          GetPage(name: '/result', page: () => ResultScreen()),
+        ],
+      ),
     );
   }
 }
