@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/interview_controller.dart';
+import '../widgets/speaking_avatar.dart';
 
 class InterviewScreen extends StatelessWidget {
   const InterviewScreen({super.key});
@@ -12,29 +13,35 @@ class InterviewScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text("Interview"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Obx(() {
-          if (interview.questions.isEmpty) {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            );
-          }
+      body: Obx(() {
+        if (interview.questions.isEmpty) {
+          return const Center(
+            child: CircularProgressIndicator(color: Colors.white),
+          );
+        }
 
-          final index = interview.currentQuestionIndex.value;
+        final index = interview.currentQuestionIndex.value;
 
-          return Column(
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+          ),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Question ${index + 1}",
-                style: const TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 10),
+              _progressBar(index, interview.questions.length),
+              const SizedBox(height: 25),
+
+              const Center(child: SpeakingAvatar(isSpeaking: false)),
+              const SizedBox(height: 30),
 
               Text(
                 interview.questions[index],
@@ -72,7 +79,7 @@ class InterviewScreen extends StatelessWidget {
                 ],
               ),
 
-              const Spacer(),
+              const SizedBox(height: 30),
 
               SizedBox(
                 width: double.infinity,
@@ -89,9 +96,33 @@ class InterviewScreen extends StatelessWidget {
                 ),
               ),
             ],
-          );
-        }),
-      ),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _progressBar(int current, int total) {
+    final progress = (current + 1) / total;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Question ${current + 1} of $total",
+          style: const TextStyle(color: Colors.grey),
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: LinearProgressIndicator(
+            value: progress,
+            minHeight: 8,
+            backgroundColor: Colors.grey.shade800,
+            valueColor: const AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+          ),
+        ),
+      ],
     );
   }
 

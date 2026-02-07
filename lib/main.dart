@@ -38,15 +38,18 @@ class NeuroTrainerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'AI Interview App',
+      title: "AI Interview App",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      themeMode: ThemeMode.dark,
+
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.dark, // default
+
       initialRoute: initialRoute,
       getPages: [
-        GetPage(name: '/login', page: () => const LoginPage()),
-        GetPage(name: '/signup', page: () => const SignupPage()),
-        GetPage(name: '/home', page: () => const InterviewHomePage()),
+        GetPage(name: '/login', page: () => LoginPage()),
+        GetPage(name: '/signup', page: () => SignupPage()),
+        GetPage(name: '/home', page: () => InterviewHomePage()),
         GetPage(name: '/interview', page: () => InterviewScreen()),
         GetPage(name: '/result', page: () => ResultScreen()),
       ],
